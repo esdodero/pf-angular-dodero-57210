@@ -1,0 +1,30 @@
+<mat-drawer-container class="example-container" autosize>
+<!-- SIDEBAR INICIO-->
+    <mat-drawer [opened]="true" #drawer class="example-sidenav" mode="side">
+      <mat-nav-list>
+        <a mat-list-item href="..."><mat-icon matListItemIcon>home</mat-icon> Inicio</a>
+        <a mat-list-item href="..."><mat-icon matListItemIcon>person</mat-icon> Alumnos</a>
+        <a mat-list-item href="..."><mat-icon matListItemIcon>library_books</mat-icon> Cursos</a>
+        <a mat-list-item href="..."><mat-icon matListItemIcon>bookmark_check</mat-icon> Inscripciones</a>
+
+      </mat-nav-list>
+    </mat-drawer>
+  <!-- SIDEBAR FIN-->
+   <!--MAIN CONTENT INICIO -->
+    <div class="example-sidenav-content">
+        <!--TOOLBAR INICIO -->
+        <mat-toolbar>
+            <button (click)="drawer.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span>CELT</span>
+            <span class="example-spacer"></span>
+        </mat-toolbar>
+      <!--TOOLBAR FIN -->
+      <main class="content">
+        <app-students></app-students>
+        
+      </main>
+    </div>
+  <!-- MAIN CONTENT FIN -->
+  </mat-drawer-container>
