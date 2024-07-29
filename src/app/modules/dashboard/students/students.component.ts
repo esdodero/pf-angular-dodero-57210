@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
-import { Student } from './model';
+import { Student } from './models';
 import { generateId } from '../../../shared/utils';
+import { StudentsService } from '../../../core/services/students.service';
 
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
-export class StudentsComponent {
+export class StudentsComponent implements OnInit {
   firstName: string = "John";
   lastName: string = "Doe";
   fechaInicio: string = "";
@@ -22,70 +23,80 @@ export class StudentsComponent {
     'birthday',
     'actions',
   ];
-  dataSource: Student[] = [
-    {
-      id: 'BH5V6',
-      firstName: 'Clara',
-      lastName: 'Kent',
-      birthday: new Date(),
-    },
-    {
-      id: 'HJI7FT',
-      firstName: 'Carlos',
-      lastName: 'Jerez',
-      birthday: new Date(),
-    },
-    {
-      id: 'HUG64',
-      firstName: 'Ciro',
-      lastName: 'Martinez',
-      birthday: new Date(),
-    },
-  ];
+  dataSource: Student[] = [];
+  isLoading = false;
 
-  constructor(private matDialog: MatDialog){}
+  constructor(
+    private matDialog: MatDialog,
+    private studentsService: StudentsService
+  ) {}
   student: string = '';
 
+  ngOnInit(): void {
+    this.loadStudents();
+  }
+  loadStudents() {
+    this.isLoading = true;
+    this.studentsService.getStudents().subscribe({
+      next: (Students) => {
+        this.dataSource = Students;
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
 
   openDialog(): void{
-    this.matDialog
-    .open(StudentDialogComponent)
-    .afterClosed()
-    .subscribe({
-      next: (student) => {
-        if(student){
-          this.firstName = student.firstName;
-          this.lastName = student.lastName;
-          this.studentFullName = { firstName: this.firstName, lastName: this.lastName };
-          student['id'] = generateId(5);
-          this.dataSource = [...this.dataSource, student];
+    this.matDialog.open(StudentDialogComponent).afterClosed().subscribe({
+      next: (value) => {
+        this.firstName = value.firstName;
+        this.lastName = value.lastName;
+        this.studentFullName = { firstName: this.firstName, lastName: this.lastName };
+        value['id'] = generateId(5);
+
+        this.isLoading = true;
+        this.studentsService.addStudent(value).subscribe({
+          next: (students) => {
+            this.dataSource = [...students];
+          },
+          complete: () => {
+            this.isLoading = false;
+          },
+        });
+      },
+    });
+  }
+
+  editStudent(editingStudent: Student){
+    this.matDialog.open(StudentDialogComponent, {data: editingStudent}).afterClosed().subscribe({
+      next: (value) => {
+        if(!!value){
+          this.studentsService
+              .editStudentById(editingStudent.id, value)
+              .subscribe({
+                next: (students) => {
+                  this.dataSource = [...students];
+                },
+              });
         }
       },
     });
   }
 
-  editStudent(editingStudent: Student) {
-    this.matDialog
-      .open(StudentDialogComponent, {
-        data: editingStudent,
-      })
-      .afterClosed()
-      .subscribe({
-        next: (value) => {
+  deleteStudentById(id: string){
+    if(confirm('Desea eliminar el estudiante?')){
+      this.isLoading = true;
 
-          if (!!value) {
-            this.dataSource = this.dataSource.map((el) => 
-              el.id === editingStudent.id 
-            ? {...value, id: editingStudent.id} : el
-            );
-          }
+      this.studentsService.deleteStudentById(id).subscribe({
+        next: (students) => {
+          this.dataSource = [...students];
+        },
+        complete: () => {
+          this.isLoading = false;
         },
       });
-  }
-
-  deleteStudentById(id: string) {
-    if(confirm("Esta seguro que desea eliminar el Alumno?")){
-      this.dataSource = this.dataSource.filter((el) => el.id !== id);
     }
   }
+
 }

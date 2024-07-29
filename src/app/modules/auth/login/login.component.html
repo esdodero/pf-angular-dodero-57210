@@ -1,0 +1,30 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: azure;">
+    <mat-card style="max-width: 400px;">
+        <mat-card-header><h2>Inicar sesión</h2></mat-card-header>
+        <mat-card-content>
+            <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="form">
+                <mat-form-field class="field-full-width" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" matInput>
+                    <mat-hint>Debe ingresar un correo valido</mat-hint>
+                    <mat-icon matPrefix>email</mat-icon>
+                </mat-form-field>
+                <mat-form-field class="field-full-width" appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input formControlName="password" matInput>
+                    <mat-hint>Debe ingresar una contrasena</mat-hint>
+                    <mat-icon matPrefix>key</mat-icon>
+                </mat-form-field>
+                <mat-form-field class="field-full-width" appearance="outline">
+                    <mat-label>Rol</mat-label>
+                    <mat-select formControlName="role">
+                        <mat-option value="ADMIN">ADMIN</mat-option>
+                        <mat-option value="USER">USER</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button type="submit" class="field-full-width" mat-flat-button>Iniciar sesion</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+

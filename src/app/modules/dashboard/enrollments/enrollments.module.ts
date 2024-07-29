@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { StudentsRoutingModule } from './students-routing.module';
-import { StudentsComponent } from './students.component';
+import { EnrollmentsRoutingModule } from './enrollments-routing.module';
+import { EnrollmentsComponent } from './enrollments.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { StudentDialogComponent } from './components/student-dialog/student-dialog.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { EnrollmentDialogComponent } from './components/enrollment-dialog/enrollment-dialog.component';
 import { SharedModule } from '../../../shared/shared.module';
 import {MatTableModule} from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,20 +12,20 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
-    StudentsComponent,
-    StudentDialogComponent,  
+    EnrollmentsComponent,
+    EnrollmentDialogComponent
   ],
   imports: [
     CommonModule,
-    StudentsRoutingModule,
+    EnrollmentsRoutingModule,
+    CommonModule,
     MatDialogModule,
-    MatDatepickerModule,
     SharedModule,
     MatTableModule,
     MatProgressSpinnerModule,
   ],
   exports: [
-    StudentsComponent
+    EnrollmentsComponent
   ]
 })
-export class StudentsModule { }
+export class EnrollmentsModule { }

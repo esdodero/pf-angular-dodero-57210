@@ -1,0 +1,29 @@
+<h2 appFontsize mat-dialog-title>{{ editingTeacher ? 'Editando registro ' + (editingTeacher.firstName | fullname : editingTeacher.lastName) : 'Crear Profesor' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="teacherForm" class="form">
+    <mat-form-field class="field-full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput name="firstName" formControlName="firstName" />
+      <mat-error>Debe ingresar el Nombre</mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+        <mat-label>Apellido</mat-label>
+        <input matInput name="lastName" formControlName="lastName" />
+        <mat-error>Debe ingresar el Apellido</mat-error>
+    </mat-form-field>
+    <mat-form-field class="field-full-width">
+        <mat-label>Fecha de Inicio</mat-label>
+        <input formControlName="startDay" matInput [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>Debe ingresar la Fecha de Inicio</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="onSubmit()">Guardar</button>
+</mat-dialog-actions>

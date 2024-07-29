@@ -2,11 +2,44 @@
 <!-- SIDEBAR INICIO-->
     <mat-drawer [opened]="true" #drawer class="example-sidenav" mode="side">
       <mat-nav-list>
-        <a mat-list-item href="..."><mat-icon matListItemIcon>home</mat-icon> Inicio</a>
-        <a mat-list-item href="..."><mat-icon matListItemIcon>person</mat-icon> Alumnos</a>
-        <a mat-list-item href="..."><mat-icon matListItemIcon>library_books</mat-icon> Cursos</a>
-        <a mat-list-item href="..."><mat-icon matListItemIcon>bookmark_check</mat-icon> Inscripciones</a>
-
+        <a mat-list-item
+          mat-list-item
+          routerLink="home"
+          routerLinkActive
+          #homeLink="routerLinkActive"
+          [activated]="homeLink.isActive" >
+          <mat-icon matListItemIcon>home</mat-icon> Inicio
+        </a>
+        <a mat-list-item 
+          routerLink="students"
+          routerLinkActive
+          #studentsLink="routerLinkActive"
+          [activated]="studentsLink.isActive" >
+          <mat-icon matListItemIcon>person</mat-icon> Alumnos
+        </a>
+        <a mat-list-item 
+          routerLink="courses"
+          routerLinkActive
+          #coursesLink="routerLinkActive"
+          [activated]="coursesLink.isActive" >
+          <mat-icon matListItemIcon>library_books</mat-icon> Cursos
+        </a>
+        <a mat-list-item 
+          routerLink="teachers"
+          routerLinkActive
+          #teachersLink="routerLinkActive"
+          [activated]="teachersLink.isActive" >
+          <mat-icon matListItemIcon>library_books</mat-icon> Teachers
+        </a>
+        <a mat-list-item 
+          mat-list-item
+          routerLink="enrollments"
+          routerLinkActive
+          #enrollmentsLink="routerLinkActive"
+          [activated]="enrollmentsLink.isActive" >
+          <mat-icon matListItemIcon>bookmark_check</mat-icon> Inscripciones
+        </a>
+        <a mat-list-item routerLink="/auth">Cerrar sesion</a>
       </mat-nav-list>
     </mat-drawer>
   <!-- SIDEBAR FIN-->
@@ -22,8 +55,7 @@
         </mat-toolbar>
       <!--TOOLBAR FIN -->
       <main class="content">
-        <app-students></app-students>
-        
+        <router-outlet />
       </main>
     </div>
   <!-- MAIN CONTENT FIN -->

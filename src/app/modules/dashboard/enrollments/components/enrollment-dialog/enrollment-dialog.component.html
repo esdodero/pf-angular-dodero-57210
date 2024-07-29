@@ -1,0 +1,21 @@
+<h2 appFontsize mat-dialog-title>{{ editingEnrollment ? 'Editando registro ': 'Crear Inscripcion' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="enrollmentForm" class="form">
+    <mat-form-field class="field-full-width">
+      <mat-label>Curso ID</mat-label>
+      <input matInput name="courseId" formControlName="courseId" />
+      <mat-error>Debe ingresar el Curso</mat-error>
+  </mat-form-field>
+    <mat-form-field class="field-full-width">
+      <mat-label>Estudiante ID</mat-label>
+      <input matInput name="studentId" formControlName="studentId" />
+      <mat-error>Debe ingresar el Estudiante</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="onSubmit()">Guardar</button>
+</mat-dialog-actions>
