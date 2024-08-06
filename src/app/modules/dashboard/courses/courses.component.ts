@@ -4,6 +4,8 @@ import { CourseDialogComponent } from './components/course-dialog/course-dialog.
 import { Course } from './models';
 import { generateId } from '../../../shared/utils';
 import { CoursesService } from '../../../core/services/courses.service';
+import { tap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-courses',
@@ -32,6 +34,14 @@ export class CoursesComponent implements OnInit {
       next: (courses) => {
         this.dataSource = courses;
       },
+      error: (error) => {
+        console.log(error);
+        if( error instanceof HttpErrorResponse){
+          if(error.status === 404){
+            console.log("cursos no encontrados");
+          }
+        }
+      },
       complete: () => {
         this.isLoading = false;
       },
@@ -46,14 +56,13 @@ export class CoursesComponent implements OnInit {
         value['id'] = generateId(5);
 
         this.isLoading = true;
-        this.coursesService.addCourse(value).subscribe({
-          next: (courses) => {
-            this.dataSource = [...courses];
-          },
-          complete: () => {
-            this.isLoading = false;
-          },
-        });
+        this.coursesService
+        .addCourse(value)
+        .pipe(tap(()=> {
+          this.loadCourses();
+          this.isLoading = false;
+        }))
+        .subscribe();
       },
     });
   }
@@ -64,11 +73,8 @@ export class CoursesComponent implements OnInit {
         if(!!value){
           this.coursesService
               .editCourseById(editingCourse.id, value)
-              .subscribe({
-                next: (courses) => {
-                  this.dataSource = [...courses];
-                },
-              });
+              .pipe(tap(()=> this.loadCourses()))
+              .subscribe();
         }
       },
     });
@@ -77,15 +83,14 @@ export class CoursesComponent implements OnInit {
   deleteCourseById(id: string){
     if(confirm('Desea eliminar el curso?')){
       this.isLoading = true;
-
-      this.coursesService.deleteCourseById(id).subscribe({
-        next: (courses) => {
-          this.dataSource = [...courses];
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
+      //implementamos un pipe, para que la recarga de los cursos suceda despues de la eliminacion
+      this.coursesService
+        .deleteCourseById(id)
+        .pipe(tap(() => {
+          this.loadCourses(),
+          this.isLoading = false
+        }))
+        .subscribe();
     }
   }
 }

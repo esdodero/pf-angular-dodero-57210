@@ -11,11 +11,10 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder){
+  constructor(public authService: AuthService, private fb: FormBuilder){
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      role: ['ADMIN', [Validators.required]]
     });
   }
 
@@ -23,7 +22,11 @@ export class LoginComponent {
     if(this.loginForm.invalid){
       alert('Error en las credenciales');
     }else{
-      this.authService.login();
+      const data = {
+        email: this.loginForm.get("email")?.value,
+        password: this.loginForm.get("password")?.value,
+      }
+      this.authService.login(data);
     }
   }
 }

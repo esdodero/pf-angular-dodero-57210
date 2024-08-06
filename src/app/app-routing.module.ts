@@ -8,47 +8,25 @@ import { StudentsComponent } from './modules/dashboard/students/students.compone
 import { CourseDetailComponent } from './modules/dashboard/courses/pages/course-detail/course-detail.component';
 import { HomeComponent } from './modules/dashboard/home/home.component';
 import { TeachersComponent } from './modules/dashboard/teachers/teachers.component';
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
-    component: LoginComponent,
+    loadChildren: () => 
+      import('./modules/auth/auth.module').then(
+        (refFile) => refFile.AuthModule
+      ),
+    
+    //component: LoginComponent,
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    children: [
-      {
-        path: 'home',
-        component: HomeComponent,
-      },
-      {
-        path: 'students',
-        component: StudentsComponent,
-      },
-      {
-        // /dashboard/courses
-        path: 'courses',
-        component: CoursesComponent,
-      },
-      {
-        path: 'courses/:id',
-        component: CourseDetailComponent,
-      },
-      {
-        // /dashboard/courses
-        path: 'teachers',
-        component: TeachersComponent,
-      },
-      {
-        path: 'enrollments',
-        component: EnrollmentsComponent,
-      },
-      {
-        path: '**', // Cualquier ruta que no coincida con las anteriores (basicmanete es un default)
-        redirectTo: '/dashboard/home',
-      },
-    ],
+    canActivate: [authGuard],
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(
+      (refFile) => refFile.DashboardModule
+    ),
   },
   {
     path: '**', // Cualquier ruta que no coincida con las anteriores (basicmanete es un default)

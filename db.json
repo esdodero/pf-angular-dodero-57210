@@ -1,0 +1,96 @@
+{
+  "users": [
+    {
+      "id": "65TF4",
+      "firstName": "Maria",
+      "lastName": "Dodero",
+      "email": "esdodero@gmail.com",
+      "password": "123456",
+      "token": "6te5wrsgdj77",
+      "role": "ADMIN"
+    },
+    {
+      "id": "65TF4",
+      "firstName": "Maria",
+      "lastName": "Dodero",
+      "email": "maria@gmail.com",
+      "password": "4321",
+      "token": "6te5wrsgdj88",
+      "role": "EMPLOYEE"
+    }
+  ],
+  "courses": [
+    {
+      "id": "jDcd2",
+      "name": "Angular",
+      "startDate": "01/04/2024",
+      "endDate": "01/04/2024"
+    },
+    {
+      "id": "jDcd3",
+      "name": "Javascript",
+      "endDate": "01/04/2024",
+      "startDate": "01/04/2024"
+    },
+    {
+      "id": "jDcd5",
+      "name": "Photoshop",
+      "endDate": "01/04/2024",
+      "startDate": "01/04/2024"
+    }
+  ],
+  "teachers": [
+    {
+      "id": "BH5V6",
+      "firstName": "Clara",
+      "lastName": "Kent",
+      "startDay": "01/04/2024"
+    },
+    {
+      "id": "HJI7FT",
+      "firstName": "Carlos",
+      "lastName": "Jerez",
+      "startDay": "01/04/2024"
+    },
+    {
+      "id": "HUG64",
+      "firstName": "Ciro",
+      "lastName": "Martinez",
+      "startDay": "01/04/2024"
+    }
+  ],
+  "enrollments": [
+    {
+      "studentId": "DHGR2",
+      "courseId": "GFTDR2"
+    },
+    {
+        "studentId": "ARFS3",
+        "courseId": "HGYT3"
+    },
+    {
+        "studentId": "HBST4",
+        "courseId": "AGVCR4"
+    }
+  ],
+  "students": [
+    {
+      "id": "BH5V6",
+      "firstName": "Clara",
+      "lastName": "Kent",
+      "birthday": "01/04/2024"
+    },
+    {
+      "id": "HJI7FT",
+      "firstName": "Carlos",
+      "lastName": "Jerez",
+      "birthday": "01/04/2024"
+    },
+    {
+      "id": "HUG64",
+      "firstName": "Ciro",
+      "lastName": "Martinez",
+      "birthday": "01/04/2024"
+    }
+  ]
+}

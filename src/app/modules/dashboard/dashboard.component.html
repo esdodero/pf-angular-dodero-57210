@@ -29,29 +29,46 @@
           routerLinkActive
           #teachersLink="routerLinkActive"
           [activated]="teachersLink.isActive" >
-          <mat-icon matListItemIcon>library_books</mat-icon> Teachers
+          <mat-icon matListItemIcon>library_books</mat-icon> Profesores
         </a>
-        <a mat-list-item 
-          mat-list-item
+        <a 
+          *ngIf="(authUser$ | async)?.role === 'ADMIN'"
+          mat-list-item 
           routerLink="enrollments"
           routerLinkActive
           #enrollmentsLink="routerLinkActive"
           [activated]="enrollmentsLink.isActive" >
           <mat-icon matListItemIcon>bookmark_check</mat-icon> Inscripciones
         </a>
-        <a mat-list-item routerLink="/auth">Cerrar sesion</a>
+        <a (click)="logout()" mat-list-item routerLink="/auth">
+          <mat-icon matListItemIcon>power_settings_new</mat-icon> Cerrar sesion
+        </a>
       </mat-nav-list>
     </mat-drawer>
   <!-- SIDEBAR FIN-->
+
    <!--MAIN CONTENT INICIO -->
     <div class="example-sidenav-content">
         <!--TOOLBAR INICIO -->
         <mat-toolbar>
-            <button (click)="drawer.toggle()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+          <div class="flex justify-content-between w-full align-items-center">
+            <div>
+              <button
+                (click)="drawer.toggle()"
+                mat-icon-button
+                class="example-icon"
+                aria-label="Example icon-button with menu icon"
+              >
                 <mat-icon>menu</mat-icon>
-            </button>
-            <span>CELT</span>
-            <span class="example-spacer"></span>
+              </button>
+              <span>CELT</span>
+            </div>
+          </div>
+          @if (authUser$ | async; as user) {
+            <div class="name">
+              {{ user.firstName + " " + user.lastName }}
+            </div>
+            }
         </mat-toolbar>
       <!--TOOLBAR FIN -->
       <main class="content">

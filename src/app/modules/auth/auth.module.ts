@@ -21,6 +21,6 @@ import { SharedModule } from '../../shared/shared.module';
     MatSelectModule,
     SharedModule
   ],
-  providers: [AuthService]
+  providers: []
 })
 export class AuthModule { }

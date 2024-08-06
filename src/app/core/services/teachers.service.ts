@@ -1,54 +1,34 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { Teacher } from "../../modules/dashboard/teachers/models";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 
 export class TeachersService{
-    private MY_DATABASE = [
-        {
-          id: 'BH5V6',
-          firstName: 'Clara',
-          lastName: 'Kent',
-          startDay: new Date(),
-        },
-        {
-          id: 'HJI7FT',
-          firstName: 'Carlos',
-          lastName: 'Jerez',
-          startDay: new Date(),
-        },
-        {
-          id: 'HUG64',
-          firstName: 'Ciro',
-          lastName: 'Martinez',
-          startDay: new Date(),
-        },
-      ];
+    
+      constructor( public  httpClient: HttpClient){}
     
       editTeacherById(id: string, update: Teacher) {
-        this.MY_DATABASE = this.MY_DATABASE.map((el) =>
-          el.id === id ? { ...update, id } : el
-        );
-        return this.getTeachers();
+        return this.httpClient.put(environment.apiUrl + "/teachers/" + id, update);
       }
     
       getTeachers(): Observable<Teacher[]> {
-        return new Observable((observer) => {
-          setTimeout(() => {
-            observer.next(this.MY_DATABASE);
-            observer.complete();
-          }, 500);
-        });
+        return this.httpClient.get<Teacher[]>(environment.apiUrl + "/teachers");
+      }
+
+      getTeacherById(id: string): Observable<Teacher | undefined> {
+        return this.getTeachers().pipe(
+          map((allTeachers) => allTeachers.find((teacher) => teacher.id === id))
+        );
       }
     
-      addTeacher(teacher: Teacher): Observable<Teacher[]> {
-        this.MY_DATABASE.push(teacher);
-        return this.getTeachers();
+      addTeacher(teacher: Teacher) {
+        return this.httpClient.post(environment.apiUrl + "/teachers", teacher);
       }
     
-      deleteTeacherById(id: string): Observable<Teacher[]> {
-        this.MY_DATABASE = this.MY_DATABASE.filter((el) => el.id != id);
-        return this.getTeachers();
+      deleteTeacherById(id: string) {
+        return this.httpClient.delete(environment.apiUrl + "/teachers/" + id);
       }
 }

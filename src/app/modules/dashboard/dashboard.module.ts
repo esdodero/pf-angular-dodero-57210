@@ -20,12 +20,8 @@ import { TeachersModule } from './teachers/teachers.module';
     DashboardRoutingModule,
     MatSidenavModule,
     MatToolbarModule,
-    StudentsModule,
-    CoursesModule,
     MatListModule,
-    EnrollmentsModule,
     SharedModule,
-    TeachersModule
   ],
   exports: [
     DashboardComponent

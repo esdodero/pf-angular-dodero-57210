@@ -4,6 +4,8 @@ import { TeacherDialogComponent } from './component/teacher-dialog/teacher-dialo
 import { Teacher } from './models';
 import { generateId } from '../../../shared/utils';
 import { TeachersService } from '../../../core/services/teachers.service';
+import { tap } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-teachers',
@@ -56,14 +58,13 @@ export class TeachersComponent {
         value['id'] = generateId(5);
 
         this.isLoading = true;
-        this.teachersService.addTeacher(value).subscribe({
-          next: (teachers) => {
-            this.dataSource = [...teachers];
-          },
-          complete: () => {
-            this.isLoading = false;
-          },
-        });
+        this.teachersService
+        .addTeacher(value)
+        .pipe(tap(()=> {
+          this.loadTeachers();
+          this.isLoading = false;
+        }))
+        .subscribe();
       },
     });
   }
@@ -74,28 +75,23 @@ export class TeachersComponent {
         if(!!value){
           this.teachersService
               .editTeacherById(editingTeacher.id, value)
-              .subscribe({
-                next: (teachers) => {
-                  this.dataSource = [...teachers];
-                },
-              });
+              .pipe(tap(()=> this.loadTeachers()))
+              .subscribe();
         }
       },
     });
   }
 
   deleteTeacherById(id: string){
-    if(confirm('Desea eliminar el estudiante?')){
+    if(confirm('Desea eliminar el Profesor?')){
       this.isLoading = true;
 
-      this.teachersService.deleteTeacherById(id).subscribe({
-        next: (teachers) => {
-          this.dataSource = [...teachers];
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
+      this.teachersService.deleteTeacherById(id)
+      .pipe(tap(() => {
+        this.loadTeachers(),
+        this.isLoading = false
+      }))
+      .subscribe();
     }
   }
 

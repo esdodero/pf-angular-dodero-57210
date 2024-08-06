@@ -4,6 +4,7 @@ import { StudentDialogComponent } from './components/student-dialog/student-dial
 import { Student } from './models';
 import { generateId } from '../../../shared/utils';
 import { StudentsService } from '../../../core/services/students.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-students',
@@ -56,14 +57,13 @@ export class StudentsComponent implements OnInit {
         value['id'] = generateId(5);
 
         this.isLoading = true;
-        this.studentsService.addStudent(value).subscribe({
-          next: (students) => {
-            this.dataSource = [...students];
-          },
-          complete: () => {
-            this.isLoading = false;
-          },
-        });
+        this.studentsService
+        .addStudent(value)
+        .pipe(tap(()=> {
+          this.loadStudents();
+          this.isLoading = false;
+        }))
+        .subscribe();
       },
     });
   }
@@ -74,11 +74,8 @@ export class StudentsComponent implements OnInit {
         if(!!value){
           this.studentsService
               .editStudentById(editingStudent.id, value)
-              .subscribe({
-                next: (students) => {
-                  this.dataSource = [...students];
-                },
-              });
+              .pipe(tap(()=> this.loadStudents()))
+              .subscribe();
         }
       },
     });
@@ -88,14 +85,13 @@ export class StudentsComponent implements OnInit {
     if(confirm('Desea eliminar el estudiante?')){
       this.isLoading = true;
 
-      this.studentsService.deleteStudentById(id).subscribe({
-        next: (students) => {
-          this.dataSource = [...students];
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
+      this.studentsService
+      .deleteStudentById(id)
+      .pipe(tap(() => {
+        this.loadStudents(),
+        this.isLoading = false
+      }))
+      .subscribe();
     }
   }
 
