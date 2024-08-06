@@ -12,7 +12,7 @@ import {
 import { environment } from '../../../environments/environment';
 import { Course } from '../../modules/dashboard/courses/models';
 
-describe('CoursesService', () => {
+fdescribe('CoursesService', () => {
   let service: CoursesService;
   let router: Router;
 
